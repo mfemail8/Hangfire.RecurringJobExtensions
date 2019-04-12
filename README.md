@@ -5,6 +5,12 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/i02yxvu0mvhyv5nk?svg=true)](https://ci.appveyor.com/project/icsharp/hangfire-recurringjobextensions)
 [![License MIT](https://img.shields.io/badge/license-MIT-green.svg)](http://opensource.org/licenses/MIT)
 
+This repo forked from https://github.com/icsharp/Hangfire.RecurringJobExtensions
+
+1. Support .Net Standard 2.0 only. 
+2. Support Hangfire 1.7+
+3. RunningJob can ben a sub-class of implement of IRecurringJob
+
 This repo is the extension for [Hangfire](https://github.com/HangfireIO/Hangfire) to build `RecurringJob` automatically.
 When app start, `RecurringJob` will be added/updated automatically.
 There is two ways to build `RecurringJob`.

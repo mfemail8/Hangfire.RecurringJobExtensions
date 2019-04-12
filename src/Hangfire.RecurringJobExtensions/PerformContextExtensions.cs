@@ -38,9 +38,9 @@ namespace Hangfire.RecurringJobExtensions
 		{
 			var o = GetJobData(context, name);
 
-			var json = JobHelper.ToJson(o);
+			var json = SerializationHelper.Serialize(o);
 
-			return JobHelper.FromJson<T>(json);
+			return SerializationHelper.Deserialize<T>(json);
 		}
 
 		/// <summary>

@@ -30,7 +30,7 @@ namespace Hangfire.RecurringJobExtensions.Configuration
 
 			if (string.IsNullOrWhiteSpace(jsonContent)) throw new Exception("Json file content is empty.");
 
-			var jsonOptions = JobHelper.FromJson<List<RecurringJobJsonOptions>>(jsonContent);
+			var jsonOptions = SerializationHelper.Deserialize<List<RecurringJobJsonOptions>>(jsonContent);
 
 			foreach (var o in jsonOptions)
 				yield return Convert(o);
@@ -39,15 +39,14 @@ namespace Hangfire.RecurringJobExtensions.Configuration
 		private RecurringJobInfo Convert(RecurringJobJsonOptions option)
 		{
 			ValidateJsonOptions(option);
-
+            var method = option.JobType.GetMethod(nameof(IRecurringJob.Execute));
+            if(method == null) {
+                throw new Exception($"The job object {option.JobName} does not have the method {nameof(IRecurringJob.Execute)}.");
+            }
 			return new RecurringJobInfo
 			{
 				RecurringJobId = option.JobName,
-#if NET45
-				Method = option.JobType.GetMethod(nameof(IRecurringJob.Execute)),
-#else
-				Method = option.JobType.GetTypeInfo().GetDeclaredMethod(nameof(IRecurringJob.Execute)),
-#endif
+                Method = method,
 				Cron = option.Cron,
 				Queue = option.Queue ?? EnqueuedState.DefaultQueue,
 				TimeZone = option.TimeZone ?? TimeZoneInfo.Utc,

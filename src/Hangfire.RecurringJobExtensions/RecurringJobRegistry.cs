@@ -53,14 +53,14 @@ namespace Hangfire.RecurringJobExtensions
 				args[i] = Expression.Default(parameters[i].ParameterType);
 			}
 
-			var x = Expression.Parameter(method.DeclaringType, "x");
+			var x = Expression.Parameter(method.ReflectedType, "x");
 
 			var methodCall = method.IsStatic ? Expression.Call(method, args) : Expression.Call(x, method, args);
 
 			var addOrUpdate = Expression.Call(
 				typeof(RecurringJob),
 				nameof(RecurringJob.AddOrUpdate),
-				new Type[] { method.DeclaringType },
+				new Type[] { method.ReflectedType },
 				new Expression[]
 				{
 					Expression.Constant(recurringJobId),

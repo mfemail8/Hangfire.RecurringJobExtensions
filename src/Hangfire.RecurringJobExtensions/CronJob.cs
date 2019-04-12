@@ -56,11 +56,7 @@ namespace Hangfire.RecurringJobExtensions
 
 			var configFile = File.Exists(jsonFile) ? jsonFile :
 				Path.Combine(
-#if NET45
-				AppDomain.CurrentDomain.BaseDirectory,
-#else
 				AppContext.BaseDirectory,
-#endif
 				jsonFile);
 
 
